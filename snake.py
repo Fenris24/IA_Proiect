@@ -10,6 +10,7 @@ class Snake:
         self.index = index
         self.fill_index = fill_index
         self.length = 0
+        self.score = 0
 
     def change_direction(self, key):
         if key == pygame.K_UP and self.direction != const.Dir.DOWN:

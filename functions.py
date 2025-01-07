@@ -29,14 +29,17 @@ def flood_fill(grid, index, fill_index):
         queue.append((x, y + 1))
         queue.append((x, y - 1))
 
+    score = 0
     for y in range(rows):
         for x in range(cols):
             if grid[y][x] == 0:
                 grid[y][x] = index
             if grid[y][x] == index:
                 grid[y][x] = fill_index
+                score += 1
             if grid[y][x] == 99:
                 grid[y][x] = 0
+    return score
 
 
 def draw_grid(grid, snakes):
