@@ -1,6 +1,5 @@
-# Ignoră doar fișierele și directoarele legate de medii virtuale
 .DS_Store
 .idea/
 *.pyc
 __pycache__/
-myenv
+myenv/myenv/
