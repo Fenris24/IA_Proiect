@@ -1,5 +1,10 @@
+from stat import FILE_ATTRIBUTE_INTEGRITY_STREAM
+from xml.etree.ElementTree import tostring
+
 import pygame
 from enum import Enum
+
+from pygame.image import tostring
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
@@ -10,10 +15,16 @@ FPS = 60
 UPDATE_RATE = 1
 SIMULATION = False
 SIMULATION_TIME = 200
+TRAINING = False
+
+F1 = 1
+F2 = 2
+FILE_IN = "generations/best_weights_gen_" + str(F1) + ".npy"
+FILE_OUT = "generations/best_weights_gen_" + str(F2) + ".npy"
 
 CR = 0.9
 F = 0.8
-POP_SIZE = 100
+POP_SIZE = 40
 INPUTS = (GRID_WIDTH * GRID_HEIGHT + 4 + 1)
 LAYER_1 = INPUTS * 64 + 64
 LAYER_2 = 64 * 32 + 32

@@ -9,18 +9,24 @@ import constants as const
 if __name__ == '__main__':
     pygame.init()
     const.SIMULATION = False
-    const.FPS = 240
+    const.FPS = 120
     const.SIMULATION_TIME = 120
-    training = True
-    if training:
-        ev.differential_evolution(10)
+    const.TRAINING = False
+    if const.TRAINING:
+        for i in range(100000):
+            ev.differential_evolution(10)
+            const.F1 += 1
+            const.F2 += 1
+            const.FILE_IN = "generations/best_weights_gen_" + str(const.F1) + ".npy"
+            const.FILE_OUT = "generations/best_weights_gen_" + str(const.F2) + ".npy"
+            const.F -= 0.001
     else:
         models = []
         for i in range(4):
-            models.append(ai.create_model(const.WEIGHTS_SIZE))
+            models.append(ai.create_model(const.INPUTS))
             file_name = 'best_weights.npy'
             if os.path.exists(file_name):
-                ai.load_weights(models[i], file_name)
+                ai.load_flat_weights(models[i], file_name)
             else:
                 ai.set_random_weights(models[i])
         const.SIMULATION_TIME = 100000

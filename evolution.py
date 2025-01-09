@@ -1,11 +1,22 @@
 import game
 import ai
+import os
 import constants as const
 import numpy as np
 
+from constants import screen
+
 
 def initialize_population():
-    return [np.random.uniform(-1, 1, const.WEIGHTS_SIZE) for _ in range(const.POP_SIZE)]
+    population = []
+    if os.path.exists(const.FILE_IN):
+        best_weights = np.load(const.FILE_IN)
+        population.append(best_weights)
+
+    while len(population) < const.POP_SIZE:
+        population.append(np.random.uniform(-1, 1, const.WEIGHTS_SIZE))
+
+    return population
 
 
 def mutation(population, target):
@@ -35,6 +46,7 @@ def selection(weights):
             models.append(model)
         scores = game.run(models)
         fitness_scores.extend(scores[:len(chunk)])
+        # print(f"simulation {(i / 4 ) + 1} completed with the scores:{fitness_scores[-4:]}")
     return fitness_scores
 
 
@@ -44,22 +56,29 @@ def differential_evolution(epochs):
         new_population = []
         fitness_scores = selection(population)
         for i in range(const.POP_SIZE):
+            # print("mutation in progress...")
             individual = mutation(population, i)
+            # print("mutation complete.")
+
+            # print("crossover in progress...")
             trial = crossover(population[i], individual)
             trial_population = population[:const.NR_SNAKES - 1]
             trial_population.append(trial)
+            # print("crossover complete.")
 
+            # print("selection in progress...")
             trial_scores = selection(trial_population)
             trial_fitness = trial_scores[-1]
-
             if trial_fitness > fitness_scores[i]:
                 new_population.append(trial)
             else:
                 new_population.append(population[i])
+            # print("selection complete.")
         population = new_population
         best_fitness = max(fitness_scores)
-        print(f"Epoch {epoch + 1}/{epochs}, Best Fitness: {best_fitness}")
+        print(f"Epoch {epoch + 1}/{epochs}, best fitness: {best_fitness}")
     fitness_scores = selection(population)
     best_index = np.argmax(fitness_scores)
     best_weights = population[best_index]
-    np.save("best_weights.npy", best_weights)
+    np.save(const.FILE_OUT, best_weights)
+    print(f"generation {const.F2}")
