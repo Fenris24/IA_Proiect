@@ -17,8 +17,8 @@ SIMULATION = False
 SIMULATION_TIME = 200
 TRAINING = False
 
-F1 = 6
-F2 = 7
+F1 = 0
+F2 = 1
 FILE_IN = "generations/best_weights_gen_" + str(F1) + ".npy"
 FILE_OUT = "generations/best_weights_gen_" + str(F2) + ".npy"
 
@@ -46,8 +46,8 @@ clock = pygame.time.Clock()
 
 
 class Dir(Enum):
-    UP = 1
-    DOWN = 2
-    LEFT = 3
-    RIGHT = 4
-    NONE = 0
+    UP = 0
+    DOWN = 1
+    LEFT = 2
+    RIGHT = 3
+    NONE = 4

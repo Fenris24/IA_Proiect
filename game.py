@@ -4,6 +4,9 @@ import snake as entity
 import functions as fun
 import constants as const
 import random
+import numpy as np
+
+from functions import to_direction
 
 
 def run(models):
@@ -40,19 +43,24 @@ def run(models):
                     snakes[0].change_direction(event.key)
         if const.TRAINING:
             for i in range(4):
-                predicted_direction = ai.predict_move(models[i], grid, snakes[i])
-                x, y = snakes[i].position
-                if (predicted_direction == const.Dir.UP and y <= const.STRIDE) or \
-                        (predicted_direction == const.Dir.DOWN and y >= const.SCREEN_HEIGHT - const.STRIDE) or \
-                        (predicted_direction == const.Dir.LEFT and x <= const.STRIDE) or \
-                        (predicted_direction == const.Dir.RIGHT and x >= const.SCREEN_WIDTH - const.STRIDE):
-                    snakes[i].score -= 100
-                else:
-                    snakes[i].change_ai_direction(predicted_direction)
+                predicted_directions = ai.predict_move(models[i], grid, snakes[i])
+                possible_directions = np.argsort(predicted_directions)
+                direction = possible_directions[-1]
+                if (fun.to_direction(direction) == snakes[i].last_direction and
+                        snakes[i].bite_line >= np.random.randint(4, 8)):
+                    if fun.is_opposite(fun.to_direction(direction), fun.to_direction(possible_directions[-2])):
+                        direction = possible_directions[-3]
+                    else:
+                        direction = possible_directions[-2]
+                direction = fun.to_direction(direction)
+                snakes[i].change_ai_direction(direction)
+                snakes[i].punish_sides(direction)
             # print(f'snake{i} moves: {snakes[i].direction}')
         if frame_count % const.UPDATE_RATE == 0:
+            snakes_alive = 0
             for snake in snakes:
                 if not snake.is_dead:
+                    snakes_alive += 1
                     snake.update()
                     y, x = snake.position
                     if (grid[x // const.STRIDE][y // const.STRIDE] == snake.index or
@@ -70,8 +78,12 @@ def run(models):
                             if s.index == grid[x // const.STRIDE][y // const.STRIDE]:
                                 s.kill()
                     grid[x // const.STRIDE][y // const.STRIDE] = -snake.index
+                if snake.fill_score > const.GRID_WIDTH * const.GRID_HEIGHT:
+                    running = False
             if not const.SIMULATION:
                 const.screen.fill(const.BLACK)
+            if snakes_alive == 1:
+                    running = False
             fun.draw_grid(grid, snakes)
         if not const.SIMULATION:
             pygame.display.flip()

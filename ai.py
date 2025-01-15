@@ -3,7 +3,6 @@ from tensorflow.python.keras import Sequential
 from tensorflow.python.keras.layers import Dense
 import numpy as np
 import functions as func
-import constants as const
 
 
 def create_model(input_size):
@@ -19,15 +18,7 @@ def predict_move(model, grid, snake):
     data = func.get_data(grid, snake)
     data = tf.convert_to_tensor([data])
     predictions = model(data)
-    move = tf.argmax(predictions[0]).numpy()
-    if move == 0:
-        return const.Dir.UP
-    elif move == 1:
-        return const.Dir.DOWN
-    elif move == 2:
-        return const.Dir.LEFT
-    elif move == 3:
-        return const.Dir.RIGHT
+    return predictions[0].numpy()
 
 
 def set_random_weights(model):

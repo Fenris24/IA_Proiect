@@ -27,8 +27,9 @@ def mutation(population, target):
 
 def crossover(target, mutant):
     trial = np.copy(target)
+    k = np.random.randint(len(target))
     for j in range(len(target)):
-        if np.random.rand() < const.CR or j == np.random.randint(len(target)):
+        if np.random.rand() < const.CR or j == k:
             trial[j] = mutant[j]
     return trial
 

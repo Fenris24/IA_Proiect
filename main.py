@@ -8,9 +8,9 @@ import constants as const
 
 if __name__ == '__main__':
     pygame.init()
-    const.SIMULATION = False
+    const.SIMULATION = True
     const.FPS = 1200
-    const.SIMULATION_TIME = 120
+    const.SIMULATION_TIME = 240
     const.TRAINING = True
     if const.TRAINING:
         for i in range(100000):

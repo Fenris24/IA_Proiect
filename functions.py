@@ -92,3 +92,21 @@ def get_data(grid, snake):
     x_normalized = x / (const.SCREEN_WIDTH - 1)
     y_normalized = y / (const.SCREEN_HEIGHT - 1)
     return normalized_grid + direction + [x_normalized, y_normalized] + [snake.length]
+
+
+def to_direction(move):
+    if move == 0:
+        return const.Dir.UP
+    elif move == 1:
+        return const.Dir.DOWN
+    elif move == 2:
+        return const.Dir.LEFT
+    elif move == 3:
+        return const.Dir.RIGHT
+
+
+def is_opposite(dir_1, dir_2):
+    return (dir_1 == const.Dir.UP and dir_2 == const.Dir.DOWN) or \
+           (dir_1 == const.Dir.DOWN and dir_2 == const.Dir.UP) or \
+           (dir_1 == const.Dir.LEFT and dir_2 == const.Dir.RIGHT) or \
+           (dir_1 == const.Dir.RIGHT and dir_2 == const.Dir.LEFT)

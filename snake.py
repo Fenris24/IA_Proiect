@@ -25,10 +25,15 @@ class Snake:
             self.score -= 100000
         self.is_dead = True
 
-    def update_history(self):
-        if len(self.history) >= 4:
-            self.history.pop(0)
-        self.history.append(self.direction)
+    def punish_sides(self, predicted_direction):
+        x, y = self.position
+
+        if (predicted_direction == const.Dir.UP and y <= const.STRIDE) or \
+                (predicted_direction == const.Dir.DOWN and y >= const.SCREEN_HEIGHT - const.STRIDE) or \
+                (predicted_direction == const.Dir.LEFT and x <= const.STRIDE) or \
+                (predicted_direction == const.Dir.RIGHT and x >= const.SCREEN_WIDTH - const.STRIDE):
+            self.score -= 200
+
 
     def detect_circle(self):
         clockwise = [const.Dir.UP, const.Dir.RIGHT, const.Dir.DOWN, const.Dir.LEFT]
@@ -41,7 +46,7 @@ class Snake:
             rotated_history = self.history[i:] + self.history[:i]
             if rotated_history == clockwise or rotated_history == counterclockwise:
                 self.score += 10000
-                print('ROTATEEEEEEED')
+                # print('ROTATEEEEEEED')
                 self.history = []
                 break
 
@@ -56,6 +61,7 @@ class Snake:
             self.direction = const.Dir.RIGHT
 
     def change_ai_direction(self, direction):
+        self.last_direction = self.direction
         if direction == const.Dir.UP and self.direction != const.Dir.DOWN:
             self.direction = const.Dir.UP
         elif direction == const.Dir.DOWN and self.direction != const.Dir.UP:
@@ -65,7 +71,9 @@ class Snake:
         elif direction == const.Dir.RIGHT and self.direction != const.Dir.LEFT:
             self.direction = const.Dir.RIGHT
 
-        self.update_history()
+        if len(self.history) >= 4:
+            self.history.pop(0)
+        self.history.append(self.direction)
         self.detect_circle()
 
     def update(self):
@@ -105,5 +113,4 @@ class Snake:
             self.bite_line = 0
         if self.bite_line > 10:
             self.score -= 500
-        self.last_direction = self.direction
         # print(self.score)
