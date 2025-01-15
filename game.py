@@ -59,6 +59,8 @@ def run(models):
                         grid[x // const.STRIDE][y // const.STRIDE] == snake.fill_index) and\
                             snake.direction != const.Dir.NONE:
                         snake.fill_score = fun.flood_fill(grid, snake.index, snake.fill_index)
+                        if snake.length > snake.max_length:
+                            snake.max_length = snake.length
                         snake.length = 0
                     elif (grid[x // const.STRIDE][y // const.STRIDE] != snake.index and
                             grid[x // const.STRIDE][y // const.STRIDE] != snake.fill_index and
@@ -81,4 +83,5 @@ def run(models):
             running = False
     for snake in snakes:
         snake.score += snake.fill_score * 2
+        # print(snake.score)
     return [snake.score for snake in snakes]

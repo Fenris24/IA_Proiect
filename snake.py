@@ -1,3 +1,5 @@
+from os import sysconf_names
+
 import pygame
 import constants as const
 
@@ -6,17 +8,21 @@ class Snake:
     def __init__(self, position, direction, color, index, fill_index):
         self.position = position
         self.direction = direction
+        self.last_direction = const.Dir.NONE
         self.color = color
         self.index = index
         self.fill_index = fill_index
         self.length = 0
+        self.max_length = 0
         self.score = 0
         self.fill_score = 0
         self.is_dead = False
         self.history = []
+        self.bite_line = 0
 
     def kill(self):
-        self.score = -2000
+        if -1000 < self.score <= 0 and self.max_length < 15:
+            self.score -= 100000
         self.is_dead = True
 
     def update_history(self):
@@ -93,3 +99,11 @@ class Snake:
             self.position = (x, y)
             # else:
             #     self.score -= 300
+        if self.last_direction == self.direction:
+            self.bite_line += 1
+        else:
+            self.bite_line = 0
+        if self.bite_line > 10:
+            self.score -= 500
+        self.last_direction = self.direction
+        # print(self.score)

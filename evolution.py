@@ -4,8 +4,6 @@ import os
 import constants as const
 import numpy as np
 
-from constants import screen
-
 
 def initialize_population():
     population = []

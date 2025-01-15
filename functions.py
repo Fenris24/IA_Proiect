@@ -88,4 +88,7 @@ def get_data(grid, snake):
         direction[2] = 1
     elif snake.direction == const.Dir.RIGHT:
         direction[3] = 1
-    return normalized_grid + [snake.length] + direction
+    x, y = snake.position
+    x_normalized = x / (const.SCREEN_WIDTH - 1)
+    y_normalized = y / (const.SCREEN_HEIGHT - 1)
+    return normalized_grid + direction + [x_normalized, y_normalized] + [snake.length]

@@ -30,14 +30,6 @@ def predict_move(model, grid, snake):
         return const.Dir.RIGHT
 
 
-def generate_random_weights(model):
-    random_weights = []
-    for layer in model.layers:
-        weights_shape = layer.get_weights()[0].shape
-        random_weights.append(np.random.uniform(-1, 1, weights_shape))
-    return random_weights
-
-
 def set_random_weights(model):
     for layer in model.layers:
         if layer.get_weights():
@@ -69,30 +61,19 @@ def save_weights(model, file_name):
     np.save(file_name, weights, allow_pickle=True)
 
 
-def load_weights(model, file_name):
-    loaded_weights = np.load(file_name, allow_pickle=True)
-    flattened_weights = [w for layer_weights in loaded_weights for w in layer_weights]
-    model.set_weights(flattened_weights)
-
-
 def load_flat_weights(model, file_name):
-    # Load the flat weights
     flat_weights = np.load(file_name)
 
-    # Get the shapes of the model's weights and biases
     expected_shapes = [w.shape for layer in model.layers for w in layer.get_weights()]
     num_params = [np.prod(shape) for shape in expected_shapes]
 
-    # Ensure the total number of weights matches
     if len(flat_weights) != sum(num_params):
         raise ValueError(f"Mismatch in total weights: expected {sum(num_params)}, got {len(flat_weights)}")
 
-    # Reshape the flat weights to match the model's structure
     reshaped_weights = []
     idx = 0
     for shape, size in zip(expected_shapes, num_params):
         reshaped_weights.append(flat_weights[idx:idx + size].reshape(shape))
         idx += size
 
-    # Assign the reshaped weights to the model
     model.set_weights(reshaped_weights)

@@ -9,9 +9,9 @@ import constants as const
 if __name__ == '__main__':
     pygame.init()
     const.SIMULATION = False
-    const.FPS = 120
+    const.FPS = 1200
     const.SIMULATION_TIME = 120
-    const.TRAINING = False
+    const.TRAINING = True
     if const.TRAINING:
         for i in range(100000):
             ev.differential_evolution(10)
@@ -24,7 +24,7 @@ if __name__ == '__main__':
         models = []
         for i in range(4):
             models.append(ai.create_model(const.INPUTS))
-            file_name = 'best_weights.npy'
+            file_name = 'best_weights1.npy'
             if os.path.exists(file_name):
                 ai.load_flat_weights(models[i], file_name)
             else:
