@@ -1,5 +1,7 @@
 # IA_Proiect
+
 Trebuie creat un virtual environment in python compatibil cu tensorflow, si instalate tensorflow si pygame.
+Pentru macos este recomandat python3.10.
 
 python -m venv env_name
 ### linux:
