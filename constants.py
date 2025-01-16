@@ -17,13 +17,13 @@ SIMULATION = False
 SIMULATION_TIME = 200
 TRAINING = False
 
-F1 = 0
-F2 = 1
+F1 = 25
+F2 = 26
 FILE_IN = "generations/best_weights_gen_" + str(F1) + ".npy"
 FILE_OUT = "generations/best_weights_gen_" + str(F2) + ".npy"
 
 CR = 0.9
-F = 0.8
+F = 0.8 - F1 / 1000
 POP_SIZE = 40
 INPUTS = (GRID_WIDTH * GRID_HEIGHT + 4 + 2 + 1)
 LAYER_1 = INPUTS * 64 + 64

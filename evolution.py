@@ -34,7 +34,7 @@ def crossover(target, mutant):
     return trial
 
 
-def selection(weights):
+def fitness(weights):
     fitness_scores = []
     for i in range(0, len(weights), const.NR_SNAKES):
         chunk = weights[i:i + const.NR_SNAKES]
@@ -51,9 +51,10 @@ def selection(weights):
 
 def differential_evolution(epochs):
     population = initialize_population()
+    best_fitness_mean = []
     for epoch in range(epochs):
         new_population = []
-        fitness_scores = selection(population)
+        fitness_scores = fitness(population)
         for i in range(const.POP_SIZE):
             # print("mutation in progress...")
             individual = mutation(population, i)
@@ -66,8 +67,9 @@ def differential_evolution(epochs):
             # print("crossover complete.")
 
             # print("selection in progress...")
-            trial_scores = selection(trial_population)
+            trial_scores = fitness(trial_population)
             trial_fitness = trial_scores[-1]
+            #selection:
             if trial_fitness > fitness_scores[i]:
                 new_population.append(trial)
             else:
@@ -75,9 +77,10 @@ def differential_evolution(epochs):
             # print("selection complete.")
         population = new_population
         best_fitness = max(fitness_scores)
+        best_fitness_mean.append(best_fitness)
         print(f"Epoch {epoch + 1}/{epochs}, best fitness: {best_fitness}")
-    fitness_scores = selection(population)
+    fitness_scores = fitness(population)
     best_index = np.argmax(fitness_scores)
     best_weights = population[best_index]
     np.save(const.FILE_OUT, best_weights)
-    print(f"generation {const.F2}")
+    print(f"generation {const.F2}, average fitness {np.mean(best_fitness_mean)}")

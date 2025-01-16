@@ -78,12 +78,12 @@ def run(models):
                             if s.index == grid[x // const.STRIDE][y // const.STRIDE]:
                                 s.kill()
                     grid[x // const.STRIDE][y // const.STRIDE] = -snake.index
-                if snake.fill_score > const.GRID_WIDTH * const.GRID_HEIGHT:
+                if snake.fill_score > (const.GRID_WIDTH * const.GRID_HEIGHT) / 2:
                     running = False
             if not const.SIMULATION:
                 const.screen.fill(const.BLACK)
-            if snakes_alive == 1:
-                    running = False
+            # if snakes_alive == 1:
+            #         running = False
             fun.draw_grid(grid, snakes)
         if not const.SIMULATION:
             pygame.display.flip()
@@ -94,6 +94,6 @@ def run(models):
         if timer > const.SIMULATION_TIME:
             running = False
     for snake in snakes:
-        snake.score += snake.fill_score * 2
+        snake.score += snake.fill_score / 2
         # print(snake.score)
     return [snake.score for snake in snakes]

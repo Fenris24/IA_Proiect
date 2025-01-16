@@ -21,8 +21,8 @@ class Snake:
         self.bite_line = 0
 
     def kill(self):
-        if -1000 < self.score <= 0 and self.max_length < 15:
-            self.score -= 100000
+        if -100 < self.score <= 0 and self.max_length < 15:
+            self.score -= 100
         self.is_dead = True
 
     def punish_sides(self, predicted_direction):
@@ -32,7 +32,7 @@ class Snake:
                 (predicted_direction == const.Dir.DOWN and y >= const.SCREEN_HEIGHT - const.STRIDE) or \
                 (predicted_direction == const.Dir.LEFT and x <= const.STRIDE) or \
                 (predicted_direction == const.Dir.RIGHT and x >= const.SCREEN_WIDTH - const.STRIDE):
-            self.score -= 200
+            self.score -= 2
 
 
     def detect_circle(self):
@@ -45,7 +45,7 @@ class Snake:
         for i in range(4):
             rotated_history = self.history[i:] + self.history[:i]
             if rotated_history == clockwise or rotated_history == counterclockwise:
-                self.score += 10000
+                self.score += 100
                 # print('ROTATEEEEEEED')
                 self.history = []
                 break
@@ -112,5 +112,5 @@ class Snake:
         else:
             self.bite_line = 0
         if self.bite_line > 10:
-            self.score -= 500
+            self.score -= 5
         # print(self.score)
