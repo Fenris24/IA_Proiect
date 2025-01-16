@@ -1,5 +1,3 @@
-from os import sysconf_names
-
 import pygame
 import constants as const
 
