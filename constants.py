@@ -1,10 +1,6 @@
-from stat import FILE_ATTRIBUTE_INTEGRITY_STREAM
-from xml.etree.ElementTree import tostring
-
 import pygame
 from enum import Enum
 
-from pygame.image import tostring
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 800
@@ -17,8 +13,8 @@ SIMULATION = False
 SIMULATION_TIME = 200
 TRAINING = False
 
-F1 = 25
-F2 = 26
+F1 = 32
+F2 = 33
 FILE_IN = "generations/best_weights_gen_" + str(F1) + ".npy"
 FILE_OUT = "generations/best_weights_gen_" + str(F2) + ".npy"
 

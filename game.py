@@ -6,8 +6,6 @@ import constants as const
 import random
 import numpy as np
 
-from functions import to_direction
-
 
 def run(models):
     timer = 0
